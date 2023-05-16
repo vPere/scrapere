@@ -4,6 +4,7 @@ import requests
 import re
 import csv
 from datetime import datetime
+import pkg_resources
 from bs4 import BeautifulSoup
 from colorama import Fore, Style
 import emoji
@@ -26,7 +27,8 @@ def count_total_lines(csv_file):
 
 def get_user_agent_list():
     user_agent_list = []
-    with open('../scrapere/user-agents-unique.txt', 'r') as f:
+    file_path = pkg_resources.resource_filename(__name__, 'user_agents.txt')
+    with open(file_path, 'r') as f:
         for line in f:
             user_agent_list.append(line.strip())
     return user_agent_list
