@@ -7,8 +7,8 @@ import pkg_resources
 from bs4 import BeautifulSoup
 from colorama import Fore, Style
 
-EMAIL_REGEX = r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"""
-
+EMAIL_REGEX = r'^("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)'
+PHONE_REGEX = r'(?:\+34|0034)?\s?(?:6|9)(?:\d\s?\d{2}\s?\d{2}\s?\d{2}|\d{2}\s?\d{3}\s?\d{3}|\d{3}\s?\d{2}\s?\d{2})'
 def progress_bar(row_count, total_rows):
     percent = round((row_count / total_rows) * 100, 2)
     progress = int(100 * row_count / total_rows)
@@ -57,6 +57,9 @@ def wait_random_time():
 
 
 def is_valid_email(email):
+    match = re.match(EMAIL_REGEX, email)
+    if not match:
+        return False
     if email.endswith('.png') or email.endswith('.jpg') or email.endswith('.gif') or email.endswith('.svg'):
         return False
     if email.endswith('@sentry-next.wixpress.com') or email.endswith('@sentry.io') or email.endswith('@sentry.wixpress.com') or email.endswith('@example.com') or email.endswith('@prestashop.com') or email.endswith('@202-ecommerce.com') or email.endswith('@e-mail.com'):
@@ -118,7 +121,7 @@ def scrap_emails(url):
             url = 'http://' + url
         response = requests.get(url, generate_header())
         soup = BeautifulSoup(response.content, 'html.parser')
-        for email in re.findall(EMAIL_REGEX, str(soup)):
+        for email in re.findall(r'[\w\.-]+@[\w\.-]+', str(soup)):
             if is_valid_email(email):
                 emails.append(email)
                 with open('emails.csv', 'a', newline='') as csvfile:
