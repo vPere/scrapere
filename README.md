@@ -4,10 +4,10 @@ This is a simple toolbox for scraping info from websites which includes methods 
 
 As this package may be useful for a bunch of legitimate and non-legitimate use cases, I'm not responsible of whatever you do with it.
 
-## Version 0.2.4 features:
+## Version 0.2.5 features:
  - Improves the email regex.
 
-## Version 0.2.4 issues:
+## Version 0.2.5 issues:
 - There are no tests...
 - scrap_phones() only works for spanish phone numbers
 

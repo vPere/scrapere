@@ -61,7 +61,7 @@ def is_valid_email(email):
         return False
     if email.endswith('@sentry-next.wixpress.com') or email.endswith('@sentry.io') or email.endswith('@sentry.wixpress.com') or email.endswith('@example.com') or email.endswith('@prestashop.com') or email.endswith('@202-ecommerce.com') or email.endswith('@e-mail.com'):
         return False
-    match = re.match(r'^[a-zA-Z]+[.][a-zA-Z]+@', email)
+    match = re.match(EMAIL_REGEX, email)
     if match and match.group() == 'nombre.apellido@':
         return False
     return True
