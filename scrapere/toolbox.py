@@ -26,7 +26,7 @@ def count_total_lines(csv_file):
 
 def get_user_agent_list():
     user_agent_list = []
-    with open('user-agents-unique.txt', 'r') as f:
+    with open('../scrapere/user-agents-unique.txt', 'r') as f:
         for line in f:
             user_agent_list.append(line.strip())
     return user_agent_list
