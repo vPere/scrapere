@@ -114,6 +114,9 @@ def scrap_emails(url):
     try:
         counter += 1
         print(f"Crawling through {url}...")
+        # check if url has http or https and add it if not
+        if not url.startswith('http'):
+            url = 'http://' + url
         response = requests.get(url, generate_header())
         soup = BeautifulSoup(response.content, 'html.parser')
         for email in re.findall(r'[\w\.-]+@[\w\.-]+', str(soup)):
